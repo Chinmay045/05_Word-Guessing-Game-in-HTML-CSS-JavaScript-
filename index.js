@@ -200,15 +200,15 @@ const wordList = [
 
 
 
-let word;
+let word, incorrects;
 const inputs = document.querySelector(".inputs");
 const resultBtn = document.querySelector(".reset-btn");
 const hint = document.querySelector(".hint span")
 const typingInput = document.querySelector(".typing-input")
-
+const wrongLetter = document.querySelector(".wrong-letter span")
 function randomWord() {
     let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-     word = ranObj.word;
+    word = ranObj.word;
     console.log(ranObj);
 
     hint.innerHTML = ranObj.hint;
@@ -222,19 +222,37 @@ function randomWord() {
 }
 
 randomWord()
-
 function initGame(e) {
-    let key = e.target.value;
-    if (key.match(/^[A-Za-z]+$/)) {
-        console.log(key);
+    let key = e.target.value.toLowerCase();
+    if (key.match(/^[A-Za-z]+$/) && !incorrectLetters.includes(` ${key}`) && !correctLetters.includes(key)) {
         if (word.includes(key)) {
-            console.log("letter found")
+            for (let i = 0; i < word.length; i++) {
+                if (word[i] == key) {
+                    correctLetters += key;
+                    inputs.querySelectorAll("input")[i].value = key;
+                }
+            }
         } else {
-            console.log("letter not found")
+            maxGuesses--;
+            incorrectLetters.push(` ${key}`);
         }
+        guessLeft.innerText = maxGuesses;
+        wrongLetter.innerText = incorrectLetters;
     }
+    typingInput.value = "";
+    setTimeout(() => {
+        if (correctLetters.length === word.length) {
+            alert(`Congrats! You found the word ${word.toUpperCase()}`);
+            return randomWord();
+        } else if (maxGuesses < 1) {
+            alert("Game over! You don't have remaining guesses");
+            for (let i = 0; i < word.length; i++) {
+                inputs.querySelectorAll("input")[i].value = word[i];
+            }
+        }
+    }, 100);
 }
-
 resultBtn.addEventListener("click", randomWord);
 typingInput.addEventListener("keydown", () => typingInput.focus());
+inputs.addEventListener("click", () => typingInput.focus());
 document.addEventListener("input", initGame)
