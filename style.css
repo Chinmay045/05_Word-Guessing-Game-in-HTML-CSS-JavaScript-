@@ -33,3 +33,9 @@ body {
 .wrapper .content {
     margin: 25px 25px 35px;
 }
+
+.content .inputs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
