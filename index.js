@@ -200,13 +200,18 @@ const wordList = [
 
 
 
-
+let word;
 const inputs = document.querySelector(".inputs");
+const resultBtn = document.querySelector(".reset-btn");
+const hint = document.querySelector(".hint span")
+const typingInput = document.querySelector(".typing-input")
 
 function randomWord() {
     let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-    let word = ranObj.word;
-    console.log(word);
+     word = ranObj.word;
+    console.log(ranObj);
+
+    hint.innerHTML = ranObj.hint;
 
     let html = "";
     for (let i = 0; i < word.length; i++) {
@@ -217,3 +222,19 @@ function randomWord() {
 }
 
 randomWord()
+
+function initGame(e) {
+    let key = e.target.value;
+    if (key.match(/^[A-Za-z]+$/)) {
+        console.log(key);
+        if (word.includes(key)) {
+            console.log("letter found")
+        } else {
+            console.log("letter not found")
+        }
+    }
+}
+
+resultBtn.addEventListener("click", randomWord);
+typingInput.addEventListener("keydown", () => typingInput.focus());
+document.addEventListener("input", initGame)
