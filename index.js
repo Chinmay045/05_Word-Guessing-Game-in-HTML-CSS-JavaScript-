@@ -200,18 +200,22 @@ const wordList = [
 
 
 
-let word, incorrects;
+let word, maxGuesses, incorrectLetters = [], correctLetters = [];
 const inputs = document.querySelector(".inputs");
 const resultBtn = document.querySelector(".reset-btn");
 const hint = document.querySelector(".hint span")
+const guessLeft = document.querySelector(".guess-left span")
 const typingInput = document.querySelector(".typing-input")
 const wrongLetter = document.querySelector(".wrong-letter span")
 function randomWord() {
     let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
     word = ranObj.word;
-    console.log(ranObj);
-
+    maxGuesses = word.length >= 5 ? 8 : 6;
+    correctLetters = []; incorrectLetters = [];
     hint.innerHTML = ranObj.hint;
+    guessLeft.innerText = maxGuesses;
+    wrongLetter.innerText = incorrectLetters;
+
 
     let html = "";
     for (let i = 0; i < word.length; i++) {
